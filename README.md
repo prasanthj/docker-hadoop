@@ -16,15 +16,16 @@ This step is required only for Mac OS X as docker is not natively supported in M
 *NOTE:* docker 1.3.0 versions require --tls to be passed to all docker command
 
 ## Pull the image
+You can either pull the image that is already pre-built from Docker hub or build the image locally (refer next section)
 ```
 docker --tls pull prasanthj/hadoop-2.5.0
 ```
 
 ## Build the image
-
+If you do not want to pull the image from Docker hub, you can build it locally using the following steps
 * To build the hadoop docker image locally from Dockerfile, first checkout source using
-`git clone TBD`
-* Change to hadoop directory `cd hadoop`
+`git clone https://github.com/prasanthj/docker-hadoop.git`
+* Change to docker-hadoop directory `cd docker-hadoop`
 
 ```
 docker --tls build  -t prasanthj/hadoop-2.5.0 .
@@ -44,7 +45,7 @@ You can run one of the stock examples:
 ```
 cd $HADOOP_PREFIX
 # run the mapreduce
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.5.1.jar grep input output 'dfs[a-z.]+'
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.5.0.jar grep input output 'dfs[a-z.]+'
 
 # check the output
 bin/hdfs dfs -cat output/*
