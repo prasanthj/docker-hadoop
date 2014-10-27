@@ -14,8 +14,8 @@ This step is required only for Mac OS X as docker is not natively supported in M
 
 * Install Boot2Docker from [here].
 * After installing, from terminal, run `boot2docker init` to initialize boot2docker.
-* Run `boot2docker start` to start boot2docker and export `DOCKER_HOST` as shown at the end of command. It usually will be `export DOCKER_HOST=tcp://192.168.59.103:2375`
-* After exporting `DOCKER_HOST` we can run docker commands.
+* Run `boot2docker start` to start boot2docker and export `DOCKER_HOST` and `DOCKER_CERT_PATH` as shown at the end of command.
+* After exporting `DOCKER_HOST` and `DOCKER_CERT_PATH` we can run docker commands.
 
 *NOTE:* docker 1.3.0 versions require --tls to be passed to all docker command
 
@@ -54,5 +54,20 @@ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.5.0.jar grep i
 # check the output
 bin/hdfs dfs -cat output/*
 ```
+
+## Viewing Web UI
+If you are running docker using Boot2Docker then do the following steps
+
+ * Setup routing on the host machine (Mac OS X) using the following
+   command `sudo route add -net 172.17.0.0/16 192.168.59.103`
+_NOTE_: 172.17.0.X is usually the ipaddress of docker container. 192.168.59.103 is the ipaddress exported in `DOCKER_HOST`
+
+ * Get containers IP address
+	* To get containers IP address we need CONTAINER_ID. To get container id use the following command which should list all running containers and its ID
+	`docker --tls ps`
+	* Use the following command to get containers IP address (where CONTAINER_ID is the container id of prasanthj/hive-on-tez image)
+	`docker --tls inspect -f=“{{.NetworkSettings.IPAddress}}” CONTAINER_ID`
+
+ * Launch a web browser and type `http://<container-ip-address>:8088` to view hadoop cluster web UI.
 
 [here]:https://github.com/boot2docker/osx-installer/releases
