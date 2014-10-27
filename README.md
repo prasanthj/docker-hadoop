@@ -1,6 +1,10 @@
-# Apache Hadoop 2.5.0 Docker image
+# Apache Hadoop 2 Docker image
 
-This is Hadoop 2.5.0 Docker image mostly adapted from https://github.com/sequenceiq/hadoop-docker but for Ubuntu (trusty).
+
+This is Hadoop 2 Docker image mostly adapted from https://github.com/sequenceiq/hadoop-docker but for Ubuntu (trusty).
+
+## Current Version
+* Apache Hadoop 2.5.0
 
 ## Running on Mac OS X
 
