@@ -53,7 +53,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # hadoop binary download
-RUN curl -s http://www.gtlib.gatech.edu/pub/apache/hadoop/common/hadoop-2.5.0/hadoop-2.5.0.tar.gz | tar -xz -C /usr/local/
+RUN curl -s http://www.us.apache.org/dist/hadoop/common/hadoop-2.5.0/hadoop-2.5.0.tar.gz | tar -xz -C /usr/local/
 RUN cd /usr/local && ln -s ./hadoop-2.5.0 hadoop
 
 # hadoop env set
