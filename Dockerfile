@@ -1,4 +1,4 @@
-# Creates pseudo distributed hadoop 2.5.0 in ubuntu
+# Creates pseudo distributed hadoop 2.5.2 in ubuntu
 # This dockerfile is adapted from seqeunceiq/hadoop-docker files
 
 FROM ubuntu:trusty
@@ -53,8 +53,9 @@ ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # hadoop binary download
-RUN curl -s http://www.us.apache.org/dist/hadoop/common/hadoop-2.5.0/hadoop-2.5.0.tar.gz | tar -xz -C /usr/local/
-RUN cd /usr/local && ln -s ./hadoop-2.5.0 hadoop
+ENV HADOOP_VERSION 2.5.2
+RUN curl -s http://www.us.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz | tar -xz -C /usr/local/
+RUN cd /usr/local && ln -s ./hadoop-${HADOOP_VERSION} hadoop
 
 # hadoop env set
 ENV HADOOP_PREFIX /usr/local/hadoop
@@ -82,7 +83,7 @@ RUN $HADOOP_PREFIX/bin/hdfs namenode -format
 
 # fixing the libhadoop.so like a boss
 RUN rm  /usr/local/hadoop/lib/native/*
-RUN curl -Ls http://dl.bintray.com/sequenceiq/sequenceiq-bin/hadoop-native-64-2.5.0.tar|tar -xz -C /usr/local/hadoop/lib/native/
+RUN curl -Ls http://dl.bintray.com/sequenceiq/sequenceiq-bin/hadoop-native-64-${HADOOP_VERSION}.tar|tar -xz -C /usr/local/hadoop/lib/native/
 
 # add and set permissions for bootstrap script
 ADD bootstrap.sh /etc/bootstrap.sh
