@@ -22,7 +22,7 @@ This step is required only for Mac OS X as docker is not natively supported in M
 ## Pull the image
 You can either pull the image that is already pre-built from Docker hub or build the image locally (refer next section)
 ```
-docker --tls pull prasanthj/hadoop-2.5.0
+docker --tls pull prasanthj/docker-hadoop
 ```
 
 ## Build the image
@@ -32,14 +32,14 @@ If you do not want to pull the image from Docker hub, you can build it locally u
 * Change to docker-hadoop directory `cd docker-hadoop`
 
 ```
-docker --tls build  -t prasanthj/hadoop-2.5.0 .
+docker --tls build  -t local-hadoop-2.5.0 .
 ```
 ## Start a container
 
 In order to use the Docker image you have just build or pulled use:
 
 ```
-docker --tls run -i -t prasanthj/hadoop-2.5.0 /etc/bootstrap.sh -bash
+docker --tls run -i -t local-hadoop-2.5.0 /etc/bootstrap.sh -bash
 ```
 
 ### Testing
@@ -47,12 +47,11 @@ docker --tls run -i -t prasanthj/hadoop-2.5.0 /etc/bootstrap.sh -bash
 You can run one of the stock examples:
 
 ```
-cd $HADOOP_PREFIX
 # run the mapreduce
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.5.0.jar grep input output 'dfs[a-z.]+'
+$HADOOP_PREFIX/bin/hadoop jar $HADOOP_PREFIX/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.5.0.jar grep input output 'dfs[a-z.]+'
 
 # check the output
-bin/hdfs dfs -cat output/*
+$HADOOP_PREFIX/bin/hdfs dfs -cat output/*
 ```
 
 ## Viewing Web UI
@@ -65,7 +64,7 @@ _NOTE_: 172.17.0.X is usually the ipaddress of docker container. 192.168.59.103 
  * Get containers IP address
 	* To get containers IP address we need CONTAINER_ID. To get container id use the following command which should list all running containers and its ID
 	`docker --tls ps`
-	* Use the following command to get containers IP address (where CONTAINER_ID is the container id of prasanthj/hive-on-tez image)
+	* Use the following command to get containers IP address (where CONTAINER_ID is the container id of local-hadoop-2.5.0 (or prasanthj/docker-hadoop if pulled from docker hub) image)
 	`docker --tls inspect -f=“{{.NetworkSettings.IPAddress}}” CONTAINER_ID`
 
  * Launch a web browser and type `http://<container-ip-address>:8088` to view hadoop cluster web UI.
