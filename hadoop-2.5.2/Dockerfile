@@ -1,4 +1,4 @@
-# Creates pseudo distributed hadoop 2.7.2 in ubuntu
+# Creates pseudo distributed hadoop 2.5.2 in ubuntu
 # This dockerfile is adapted from seqeunceiq/hadoop-docker files
 
 FROM ubuntu:trusty
@@ -37,7 +37,7 @@ ADD ssh_config /root/.ssh/config
 RUN chmod 600 /root/.ssh/config
 RUN chown root:root /root/.ssh/config
 
-# oracle jdk 8
+# oracle jdk 7
 RUN apt-file update
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:webupd8team/java
@@ -46,14 +46,14 @@ RUN apt-get update
 # to accept license agreement automatically
 RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
 RUN echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
-RUN apt-get install -y oracle-java8-installer
+RUN apt-get install -y oracle-java7-installer
 
 # java env setup
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # hadoop binary download
-ENV HADOOP_VERSION 2.7.2
+ENV HADOOP_VERSION 2.5.2
 RUN curl -s http://www.us.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz | tar -xz -C /usr/local/
 RUN cd /usr/local && ln -s ./hadoop-${HADOOP_VERSION} hadoop
 
@@ -64,7 +64,7 @@ ENV HADOOP_HDFS_HOME /usr/local/hadoop
 ENV HADOOP_MAPRED_HOME /usr/local/hadoop
 ENV HADOOP_YARN_HOME /usr/local/hadoop
 ENV HADOOP_CONF_DIR /usr/local/hadoop/etc/hadoop
-RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-8-oracle\nexport HADOOP_PREFIX=/usr/local/hadoop\nexport HADOOP_HOME=/usr/local/hadoop\n:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
+RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-7-oracle\nexport HADOOP_PREFIX=/usr/local/hadoop\nexport HADOOP_HOME=/usr/local/hadoop\n:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 RUN sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop/:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 
 # copy hadoop site xml files
@@ -82,8 +82,8 @@ ADD yarn-site.xml $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
 RUN $HADOOP_PREFIX/bin/hdfs namenode -format
 
 # fixing the libhadoop.so like a boss
-# RUN rm  /usr/local/hadoop/lib/native/*
-# RUN curl -Ls http://dl.bintray.com/sequenceiq/sequenceiq-bin/hadoop-native-64-${HADOOP_VERSION}.tar|tar -xz -C /usr/local/hadoop/lib/native/
+RUN rm  /usr/local/hadoop/lib/native/*
+RUN curl -Ls http://dl.bintray.com/sequenceiq/sequenceiq-bin/hadoop-native-64-${HADOOP_VERSION}.tar|tar -xz -C /usr/local/hadoop/lib/native/
 
 # add and set permissions for bootstrap script
 ADD bootstrap.sh /etc/bootstrap.sh
