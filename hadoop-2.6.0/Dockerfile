@@ -9,12 +9,13 @@ USER root
 
 # install dev tools
 RUN apt-get update
-RUN apt-get install -y curl tar openssh-server openssh-client rsync python-software-properties apt-file
+RUN apt-get install -y curl tar openssh-server openssh-client rsync python-software-properties apt-file apache2
 
 # for running sshd in ubuntu trusty. https://github.com/docker/docker/issues/5704
 RUN mkdir /var/run/sshd
 RUN echo 'root:secretpasswd' | chpasswd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # passwordless ssh
 RUN yes | ssh-keygen -q -N "" -t dsa -f /etc/ssh/ssh_host_dsa_key
