@@ -9,12 +9,14 @@ USER root
 
 # install dev tools
 RUN apt-get update
-RUN apt-get install -y curl tar openssh-server openssh-client rsync python-software-properties apt-file
+RUN apt-get install -y curl tar openssh-server openssh-client rsync python-software-properties apt-file apache2
 
 # for running sshd in ubuntu trusty. https://github.com/docker/docker/issues/5704
 RUN mkdir /var/run/sshd
 RUN echo 'root:secretpasswd' | chpasswd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN sed -i 's/Listen 80/Listen 9999/g' /etc/apache2/ports.conf
 
 # passwordless ssh
 RUN yes | ssh-keygen -q -N "" -t dsa -f /etc/ssh/ssh_host_dsa_key
@@ -105,4 +107,4 @@ RUN /usr/sbin/sshd && $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && $HADOOP_PREFIX/
 CMD ["/etc/bootstrap.sh", "-d"]
 
 # expose ports
-EXPOSE 50020 50090 50070 50010 50075 8031 8032 8033 8040 8042 49707 22 8088 8030
+EXPOSE 50020 50090 50070 50010 50075 8031 8032 8033 8040 8042 49707 22 8088 8188 8030 9999
