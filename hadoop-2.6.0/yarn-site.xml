@@ -52,6 +52,11 @@
   </property>
 
   <property>
+    <name>yarn.resourcemanager.webapp.cross-origin.enabled</name>
+    <value>true</value>
+  </property>
+
+  <property>
     <description>Publish YARN information to Timeline Server</description>
     <name> yarn.resourcemanager.system-metrics-publisher.enabled</name>
     <value>true</value>
