@@ -40,7 +40,7 @@
   <property>
     <description>The hostname of the Timeline service web application.</description>
     <name>yarn.timeline-service.hostname</name>
-    <value>localhost</value>
+    <value>0.0.0.0</value>
   </property>
 
   <property>
